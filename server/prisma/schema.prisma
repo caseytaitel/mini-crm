@@ -1,0 +1,27 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")   // supported again in Prisma 6
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Contact {
+  id        Int     @id @default(autoincrement())
+  name      String
+  email     String?
+  phone     String?
+  company   String?
+  notes     Note[]
+  createdAt DateTime @default(now())
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  contactId Int
+  title     String?
+  body      String
+  contact   Contact  @relation(fields: [contactId], references: [id])
+  createdAt DateTime @default(now())
+}
