@@ -1,6 +1,6 @@
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")   // supported again in Prisma 6
+  url      = env("DATABASE_URL")   
 }
 
 generator client {
@@ -22,6 +22,6 @@ model Note {
   contactId Int
   title     String?
   body      String
-  contact   Contact  @relation(fields: [contactId], references: [id])
+  contact   Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
