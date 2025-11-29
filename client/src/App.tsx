@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useContacts } from "./hooks/useContacts";
-import { ContactList } from "./components/contacts/ContactList";
-import { ContactForm } from "./components/contacts/ContactForm";
 import { useNotes } from "./hooks/useNotes";
-import { NoteList } from "./components/notes/NoteList";
-import { NoteForm } from "./components/notes/NoteForm";
+import { ContactsPanel } from "./layout/ContactsPanel";
+import { NotesPanel } from "./layout/NotesPanel"
 
 export default function App() {
   const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
@@ -12,8 +10,18 @@ export default function App() {
   const {
     contacts,
     loading: contactsLoading,
+    error,
     createContact,
-  } = useContacts();
+    updateContact,
+    deleteContact,
+    search,
+    setSearch,
+    companyFilter,
+    setCompanyFilter,
+    currentPage,
+    setCurrentPage,
+    totalPages,
+  } = useContacts();  
 
   const {
     notes,
@@ -22,34 +30,26 @@ export default function App() {
   } = useNotes(selectedContactId);
 
   return (
-    <div style={{ display: "flex", padding: 20, gap: 20 }}>
-      <div style={{ width: "30%" }}>
-        <h2>Contacts</h2>
-
-        <ContactForm onCreate={createContact} />
-
-        <ContactList
-          contacts={contacts}
-          loading={contactsLoading}
-          selectedContactId={selectedContactId}
-          onSelect={setSelectedContactId}
-        />
-      </div>
-
-      <div style={{ width: "70%" }}>
-        <h2>Notes</h2>
-
-        {selectedContactId && (
-          <NoteForm onCreate={createNote} />
-        )}
-
-        <NoteList
-          notes={notes}
-          loading={notesLoading}
-          selectedContactId={selectedContactId}
-        />
-      </div>
+    <div style={{ display: "flex", height: "100vh" }}>
+      <ContactsPanel
+        contacts={contacts}
+        selectedContactId={selectedContactId}
+        onSelect={setSelectedContactId}
+        search={search}
+        setSearch={setSearch}
+        companyFilter={companyFilter}
+        setCompanyFilter={setCompanyFilter}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
+  
+      <NotesPanel
+        notes={notes}
+        selectedContactId={selectedContactId}
+        createNote={createNote}
+        loading={notesLoading}
+      />
     </div>
   );
-}
-
+}  

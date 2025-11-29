@@ -6,7 +6,15 @@ export function useContacts() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
+  const [companyFilter, setCompanyFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5; 
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, companyFilter]);
+  
   // Load all contacts on mount
   useEffect(() => {
     (async () => {
@@ -42,12 +50,43 @@ export function useContacts() {
     setContacts((prev) => prev.filter((c) => c.id !== id));
   }
 
+  // --- TRANSFORM PIPELINE ---
+
+  // 1. SEARCH
+  const searched = contacts.filter((c) => {
+    const query = search.toLowerCase();
+    return (
+      c.name.toLowerCase().includes(query) ||
+      c.email?.toLowerCase().includes(query) ||
+      c.company?.toLowerCase().includes(query)
+    );
+  });
+
+  // 2. FILTER by company
+  const filtered =
+    companyFilter === ""
+      ? searched
+      : searched.filter((c) => c.company === companyFilter);
+
+  // 3. PAGINATION
+  const totalPages = Math.ceil(filtered.length / pageSize);
+
+  const start = (currentPage - 1) * pageSize;
+  const paginated = filtered.slice(start, start + pageSize);
+  
   return {
-    contacts,
+    contacts: paginated,
     loading,
     error,
     createContact,
     updateContact,
     deleteContact,
+    search,
+    setSearch,
+    companyFilter,
+    setCompanyFilter,
+    currentPage,
+    setCurrentPage,
+    totalPages,
   };
 }
