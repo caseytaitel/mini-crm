@@ -26,7 +26,10 @@ export default function App() {
   const {
     notes,
     loading: notesLoading,
+    error: notesError,
     createNote,
+    updateNote,
+    deleteNote,
   } = useNotes(selectedContactId);
 
   return (
@@ -35,6 +38,9 @@ export default function App() {
         contacts={contacts}
         selectedContactId={selectedContactId}
         onSelect={setSelectedContactId}
+        createContact={createContact}
+        updateContact={updateContact}
+        deleteContact={deleteContact}
         search={search}
         setSearch={setSearch}
         companyFilter={companyFilter}
@@ -42,13 +48,15 @@ export default function App() {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
+        loading={contactsLoading}
       />
   
       <NotesPanel
         notes={notes}
         selectedContactId={selectedContactId}
         createNote={createNote}
-        loading={notesLoading}
+        updateNote={updateNote}
+        deleteNote={deleteNote}
       />
     </div>
   );

@@ -5,10 +5,19 @@ interface Props {
   contacts: Contact[];
   selectedContactId: number | null;
   onSelect: (id: number) => void;
+  updateContact: (id: number, data: Partial<Contact>) => Promise<void>;
+  deleteContact: (id: number) => Promise<void>;
   loading: boolean;
 }
 
-export function ContactList({ contacts, selectedContactId, onSelect, loading }: Props) {
+export function ContactList({
+  contacts,
+  selectedContactId,
+  onSelect,
+  updateContact,
+  deleteContact,
+  loading,
+}: Props) {
   if (loading) return <div>Loading...</div>;
   if (!contacts.length) return <div>No contacts yet</div>;
 
@@ -20,6 +29,8 @@ export function ContactList({ contacts, selectedContactId, onSelect, loading }: 
           contact={c}
           isSelected={c.id === selectedContactId}
           onSelect={() => onSelect(c.id)}
+          onUpdate={updateContact}
+          onDelete={deleteContact}
         />
       ))}
     </div>

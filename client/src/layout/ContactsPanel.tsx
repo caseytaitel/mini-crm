@@ -1,10 +1,17 @@
-import React from "react";
 import type { Contact } from "../types/Contact";
+import { ContactForm } from "../components/contacts/ContactForm";
+import { CompanyFilter } from "../components/contacts/CompanyFilter";
+import { ContactList } from "../components/contacts/ContactList";
+import { ContactSearch } from "../components/contacts/ContactSearch";
+import { PaginationControls } from "../components/contacts/PaginationControls";
 
 type Props = {
   contacts: Contact[];
   selectedContactId: number | null;
   onSelect: (id: number) => void;
+  createContact: (data: Partial<Contact>) => Promise<void>;
+  updateContact: (id: number, data: Partial<Contact>) => Promise<void>;
+  deleteContact: (id: number) => Promise<void>;
   search: string;
   setSearch: (v: string) => void;
   companyFilter: string;
@@ -12,12 +19,16 @@ type Props = {
   currentPage: number;
   setCurrentPage: (n: number) => void;
   totalPages: number;
+  loading: boolean;
 };
 
 export function ContactsPanel({
   contacts,
   selectedContactId,
   onSelect,
+  createContact,
+  updateContact,
+  deleteContact,
   search,
   setSearch,
   companyFilter,
@@ -25,64 +36,41 @@ export function ContactsPanel({
   currentPage,
   setCurrentPage,
   totalPages,
+  loading,
 }: Props) {
   return (
-    <div style={{ width: "45%", borderRight: "1px solid #eee", padding: "16px" }}>
+    <div style={{ width: "45%", borderRight: "1px solid #eee", padding: 16 }}>
       <h2>Contacts</h2>
 
       {/* Search */}
-      <input
-        placeholder="Search..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{ width: "100%", marginBottom: 8 }}
-      />
+      <ContactSearch search={search} setSearch={setSearch} />
 
       {/* Company Filter */}
-      <input
-        placeholder="Filter by company..."
-        value={companyFilter}
-        onChange={(e) => setCompanyFilter(e.target.value)}
-        style={{ width: "100%", marginBottom: 16 }}
+      <CompanyFilter
+        contacts={contacts}
+        companyFilter={companyFilter}
+        setCompanyFilter={setCompanyFilter}
       />
 
-      {/* List */}
-      <div>
-        {contacts.map((c) => (
-          <div
-            key={c.id}
-            onClick={() => onSelect(c.id)}
-            style={{
-              padding: "8px",
-              cursor: "pointer",
-              background: c.id === selectedContactId ? "#f3f3f3" : "white",
-              borderBottom: "1px solid #eee",
-            }}
-          >
-            <strong>{c.name}</strong>
-            {c.company && <div style={{ fontSize: 12 }}>{c.company}</div>}
-          </div>
-        ))}
-      </div>
+      {/* Create Contact */}
+      <ContactForm onCreate={createContact} />
+
+      {/* Contact List */}
+      <ContactList
+        contacts={contacts}
+        selectedContactId={selectedContactId}
+        onSelect={onSelect}
+        updateContact={updateContact}
+        deleteContact={deleteContact}
+        loading={loading}
+      />
 
       {/* Pagination */}
-      <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
-        <button
-          disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
-        >
-          Prev
-        </button>
-        <span>
-          Page {currentPage} / {totalPages}
-        </span>
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage(currentPage + 1)}
-        >
-          Next
-        </button>
-      </div>
+      <PaginationControls
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 }

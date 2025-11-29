@@ -7,7 +7,7 @@ export function useNotes(contactId: number | null) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch notes whenever contactId changes
+  // Fetch notes when contact changes
   useEffect(() => {
     if (contactId === null) {
       setNotes([]);
@@ -28,7 +28,7 @@ export function useNotes(contactId: number | null) {
   }, [contactId]);
 
   // CREATE
-  async function createNote(data: Partial<Note>) {
+  async function createNote(data: Partial<Note>): Promise<void> {
     if (contactId === null) return;
 
     const newNote = await notesAPI.create(contactId, data);
@@ -36,7 +36,7 @@ export function useNotes(contactId: number | null) {
   }
 
   // UPDATE
-  async function updateNote(id: number, data: Partial<Note>) {
+  async function updateNote(id: number, data: Partial<Note>): Promise<void> {
     const updated = await notesAPI.update(id, data);
     setNotes((prev) =>
       prev.map((n) => (n.id === id ? updated : n))
@@ -44,7 +44,7 @@ export function useNotes(contactId: number | null) {
   }
 
   // DELETE
-  async function deleteNote(id: number) {
+  async function deleteNote(id: number): Promise<void> {
     await notesAPI.delete(id);
     setNotes((prev) => prev.filter((n) => n.id !== id));
   }

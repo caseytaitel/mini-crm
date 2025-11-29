@@ -1,7 +1,8 @@
 import { useState } from "react";
+import type { Contact } from "../../types/Contact";
 
 interface Props {
-  onCreate: (data: any) => void;
+  onCreate: (data: Partial<Contact>) => Promise<void>;
 }
 
 export function ContactForm({ onCreate }: Props) {
@@ -26,7 +27,6 @@ export function ContactForm({ onCreate }: Props) {
     <form onSubmit={handleSubmit} style={{ marginBottom: 16 }}>
       <input
         style={{ padding: 8, width: "100%", marginBottom: 8 }}
-        type="text"
         placeholder="Name (required)"
         value={name}
         onChange={(e) => setName(e.target.value)}
@@ -34,7 +34,6 @@ export function ContactForm({ onCreate }: Props) {
 
       <input
         style={{ padding: 8, width: "100%", marginBottom: 8 }}
-        type="email"
         placeholder="Email (optional)"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -42,7 +41,6 @@ export function ContactForm({ onCreate }: Props) {
 
       <input
         style={{ padding: 8, width: "100%", marginBottom: 8 }}
-        type="text"
         placeholder="Phone (optional)"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
@@ -50,7 +48,6 @@ export function ContactForm({ onCreate }: Props) {
 
       <input
         style={{ padding: 8, width: "100%", marginBottom: 8 }}
-        type="text"
         placeholder="Company (optional)"
         value={company}
         onChange={(e) => setCompany(e.target.value)}

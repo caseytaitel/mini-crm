@@ -1,21 +1,22 @@
 import type { Note } from "../../types/Note";
 import { NoteItem } from "./NoteItem";
 
-interface Props {
+type Props = {
   notes: Note[];
-  loading: boolean;
-  selectedContactId: number | null;
-}
+  updateNote: (id: number, data: Partial<Note>) => Promise<void>;
+  deleteNote: (id: number) => Promise<void>;
+};
 
-export function NoteList({ notes, loading, selectedContactId }: Props) {
-  if (!selectedContactId) return <div>Select a contact to view notes</div>;
-  if (loading) return <div>Loading notes...</div>;
-  if (!notes.length) return <div>No notes yet</div>;
-
+export function NoteList({ notes, updateNote, deleteNote }: Props) {
   return (
-    <div style={{ border: "1px solid #ddd", borderRadius: 4 }}>
+    <div>
       {notes.map((n) => (
-        <NoteItem key={n.id} note={n} />
+        <NoteItem
+          key={n.id}
+          note={n}
+          updateNote={updateNote}
+          deleteNote={deleteNote}
+        />
       ))}
     </div>
   );

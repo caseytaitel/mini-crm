@@ -3,15 +3,15 @@ const prisma = new PrismaClient();
 
 exports.getNotesForContact = async (contactId) => {
   return prisma.note.findMany({
-    where: { contactId: Number(contactId) },
-    orderBy: { createdAt: 'desc' },
+    where: { contactId },
+    orderBy: { createdAt: "desc" },
   });
 };
 
 exports.createNote = async (contactId, data) => {
   return prisma.note.create({
     data: {
-      contactId: Number(contactId),
+      contactId,
       title: data.title || null,
       body: data.body,
     },
@@ -20,7 +20,7 @@ exports.createNote = async (contactId, data) => {
 
 exports.updateNote = async (noteId, data) => {
   return prisma.note.update({
-    where: { id: Number(noteId) },
+    where: { id: noteId },
     data: {
       title: data.title || null,
       body: data.body,
@@ -30,6 +30,6 @@ exports.updateNote = async (noteId, data) => {
 
 exports.deleteNote = async (noteId) => {
   return prisma.note.delete({
-    where: { id: Number(noteId) },
+    where: { id: noteId },
   });
 };
