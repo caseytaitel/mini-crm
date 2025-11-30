@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Contact } from "../../types/Contact";
+import styles from "./ContactForm.module.css";
 
 interface Props {
   onCreate: (data: Partial<Contact>) => Promise<void>;
@@ -24,36 +25,36 @@ export function ContactForm({ onCreate }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: 16 }}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <input
-        style={{ padding: 8, width: "100%", marginBottom: 8 }}
+        className={styles.input}
         placeholder="Name (required)"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
 
       <input
-        style={{ padding: 8, width: "100%", marginBottom: 8 }}
+        className={styles.input}
         placeholder="Email (optional)"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
 
       <input
-        style={{ padding: 8, width: "100%", marginBottom: 8 }}
+        className={styles.input}
         placeholder="Phone (optional)"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
       />
 
       <input
-        style={{ padding: 8, width: "100%", marginBottom: 8 }}
+        className={styles.input}
         placeholder="Company (optional)"
         value={company}
         onChange={(e) => setCompany(e.target.value)}
       />
 
-      <button type="submit" style={{ width: "100%", padding: 8 }}>
+      <button type="submit" className={styles.submitButton}>
         Add Contact
       </button>
     </form>

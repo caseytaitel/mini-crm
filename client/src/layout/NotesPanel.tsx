@@ -1,5 +1,7 @@
+import { useState } from "react";
 import type { Note } from "../types/Note";
 import { NoteList } from "../components/notes/NoteList";
+import styles from "./NotesPanel.module.css";
 
 type Props = {
   notes: Note[];
@@ -16,9 +18,11 @@ export function NotesPanel({
   updateNote,
   deleteNote,
 }: Props) {
+  const [selectedNoteId, setSelectedNoteId] = useState<number | null>(null);
+
   if (!selectedContactId) {
     return (
-      <div style={{ width: "55%", padding: 16 }}>
+      <div className={styles.container}>
         <h2>Notes</h2>
         <p>Select a contact to view notes.</p>
       </div>
@@ -26,19 +30,25 @@ export function NotesPanel({
   }
 
   return (
-    <div style={{ width: "55%", padding: 16 }}>
+    <div className={styles.container}>
       <h2>Notes</h2>
 
-      {/* Add Note Button */}
+      {/* Create Note */}
       <button
         onClick={() => createNote({ title: "New Note", body: "" })}
-        style={{ marginBottom: 16 }}
+        className={styles.addButton}
       >
         + Add Note
       </button>
 
-      {/* Note List */}
-      <NoteList notes={notes} updateNote={updateNote} deleteNote={deleteNote} />
+      {/* List */}
+      <NoteList
+        notes={notes}
+        updateNote={updateNote}
+        deleteNote={deleteNote}
+        selectedNoteId={selectedNoteId}
+        setSelectedNoteId={setSelectedNoteId}
+      />
     </div>
   );
 }

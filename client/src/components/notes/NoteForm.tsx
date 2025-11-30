@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./NoteForm.module.css";
 
 interface Props {
   onCreate: (data: any) => void;
@@ -19,23 +20,23 @@ export function NoteForm({ onCreate }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: 16 }}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <input
         type="text"
         placeholder="Note title (optional)"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        style={{ padding: 8, width: "100%", marginBottom: 8 }}
+        className={styles.input}
       />
 
       <textarea
         placeholder="Write a note..."
         value={body}
         onChange={(e) => setBody(e.target.value)}
-        style={{ padding: 8, width: "100%", height: 80 }}
+        className={styles.textarea}
       />
 
-      <button type="submit" style={{ width: "100%", padding: 8, marginTop: 8 }}>
+      <button type="submit" className={styles.submitButton}>
         Add Note
       </button>
     </form>

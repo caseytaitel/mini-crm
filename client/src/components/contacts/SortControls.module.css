@@ -1,0 +1,11 @@
+.select {
+  padding: 8px;
+  width: 100%;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+

@@ -1,0 +1,12 @@
+.emptyMessage {
+  padding: 12px;
+  text-align: center;
+  color: #666;
+}
+
+.container {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+

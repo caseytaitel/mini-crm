@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useContacts } from "./hooks/useContacts";
 import { useNotes } from "./hooks/useNotes";
 import { ContactsPanel } from "./layout/ContactsPanel";
-import { NotesPanel } from "./layout/NotesPanel"
+import { NotesPanel } from "./layout/NotesPanel";
+import styles from "./App.module.css";
 
 export default function App() {
   const [selectedContactId, setSelectedContactId] = useState<number | null>(null);
@@ -10,7 +11,6 @@ export default function App() {
   const {
     contacts,
     loading: contactsLoading,
-    error,
     createContact,
     updateContact,
     deleteContact,
@@ -21,19 +21,19 @@ export default function App() {
     currentPage,
     setCurrentPage,
     totalPages,
+    sortOrder,
+    setSortOrder
   } = useContacts();  
 
   const {
     notes,
-    loading: notesLoading,
-    error: notesError,
     createNote,
     updateNote,
     deleteNote,
   } = useNotes(selectedContactId);
 
   return (
-    <div style={{ display: "flex", height: "100vh" }}>
+    <div className={styles.container}>
       <ContactsPanel
         contacts={contacts}
         selectedContactId={selectedContactId}
@@ -49,6 +49,8 @@ export default function App() {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
         loading={contactsLoading}
+        sortOrder={sortOrder}
+        setSortOrder={setSortOrder} 
       />
   
       <NotesPanel

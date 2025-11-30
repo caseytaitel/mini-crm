@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Contact } from "../../types/Contact";
+import styles from "./ContactItem.module.css";
 
 interface Props {
   contact: Contact;
@@ -37,49 +38,51 @@ export function ContactItem({
 
   return (
     <div
-      style={{
-        padding: "8px 12px",
-        background: isSelected ? "#e6f0ff" : "white",
-        borderBottom: "1px solid #eee",
-      }}
+      className={isSelected ? styles.containerSelected : styles.container}
     >
       {isEditing ? (
         <>
           <input
-            style={{ width: "100%", marginBottom: 4 }}
+            className={styles.input}
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <input
-            style={{ width: "100%", marginBottom: 4 }}
+            className={styles.input}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            style={{ width: "100%", marginBottom: 4 }}
+            className={styles.input}
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
           <input
-            style={{ width: "100%", marginBottom: 4 }}
+            className={styles.input}
             value={company}
             onChange={(e) => setCompany(e.target.value)}
           />
 
-          <button onClick={handleSave} style={{ marginRight: 8 }}>
+          <button onClick={handleSave} className={styles.saveButton}>
             Save
           </button>
-          <button onClick={handleCancel}>Cancel</button>
+          <button onClick={handleCancel} className={styles.button}>
+            Cancel
+          </button>
         </>
       ) : (
-        <div onClick={onSelect} style={{ cursor: "pointer" }}>
+        <div onClick={onSelect} className={styles.clickable}>
           <strong>{contact.name}</strong>
           {contact.company && (
-            <div style={{ fontSize: 12 }}>{contact.company}</div>
+            <div className={styles.company}>{contact.company}</div>
           )}
-          <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={() => onDelete(contact.id)}>Delete</button>
+          <div className={styles.buttonContainer}>
+            <button onClick={() => setIsEditing(true)} className={styles.button}>
+              Edit
+            </button>
+            <button onClick={() => onDelete(contact.id)} className={styles.button}>
+              Delete
+            </button>
           </div>
         </div>
       )}

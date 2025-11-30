@@ -1,3 +1,5 @@
+import styles from "./PaginationControls.module.css";
+
 interface Props {
     currentPage: number;
     totalPages: number;
@@ -14,37 +16,29 @@ interface Props {
     const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   
     return (
-      <div
-        style={{
-          display: "flex",
-          gap: 8,
-          marginTop: 12,
-          justifyContent: "center",
-        }}
-      >
+      <div className={styles.container}>
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
+          className={styles.pageButton}
         >
           Prev
         </button>
-  
+
         {pages.map((p) => (
           <button
             key={p}
             onClick={() => setCurrentPage(p)}
-            style={{
-              fontWeight: p === currentPage ? "bold" : "normal",
-              textDecoration: p === currentPage ? "underline" : "none",
-            }}
+            className={p === currentPage ? styles.pageButtonActive : styles.pageButton}
           >
             {p}
           </button>
         ))}
-  
+
         <button
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage(currentPage + 1)}
+          className={styles.pageButton}
         >
           Next
         </button>

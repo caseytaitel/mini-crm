@@ -1,3 +1,5 @@
+import styles from "./ContactSearch.module.css";
+
 interface Props {
     search: string;
     setSearch: (value: string) => void;
@@ -10,11 +12,7 @@ interface Props {
         placeholder="Search contacts..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        style={{
-          padding: 8,
-          width: "100%",
-          marginBottom: 12,
-        }}
+        className={styles.input}
       />
     );
   }

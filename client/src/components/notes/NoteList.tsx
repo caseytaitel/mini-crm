@@ -5,9 +5,17 @@ type Props = {
   notes: Note[];
   updateNote: (id: number, data: Partial<Note>) => Promise<void>;
   deleteNote: (id: number) => Promise<void>;
+  selectedNoteId: number | null;
+  setSelectedNoteId: (id: number) => void;
 };
 
-export function NoteList({ notes, updateNote, deleteNote }: Props) {
+export function NoteList({
+  notes,
+  updateNote,
+  deleteNote,
+  selectedNoteId,
+  setSelectedNoteId
+}: Props) {
   return (
     <div>
       {notes.map((n) => (
@@ -16,6 +24,8 @@ export function NoteList({ notes, updateNote, deleteNote }: Props) {
           note={n}
           updateNote={updateNote}
           deleteNote={deleteNote}
+          isSelected={n.id === selectedNoteId}
+          onSelect={() => setSelectedNoteId(n.id)}
         />
       ))}
     </div>

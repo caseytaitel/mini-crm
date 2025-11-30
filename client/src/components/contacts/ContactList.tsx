@@ -1,5 +1,6 @@
 import type { Contact } from "../../types/Contact";
 import { ContactItem } from "./ContactItem";
+import styles from "./ContactList.module.css";
 
 interface Props {
   contacts: Contact[];
@@ -19,10 +20,12 @@ export function ContactList({
   loading,
 }: Props) {
   if (loading) return <div>Loading...</div>;
-  if (!contacts.length) return <div>No contacts yet</div>;
+  if (!loading && contacts.length === 0) {
+    return <div className={styles.emptyMessage}>No matching contacts.</div>;
+  }
 
   return (
-    <div style={{ border: "1px solid #ddd", borderRadius: 4 }}>
+    <div className={styles.container}>
       {contacts.map((c) => (
         <ContactItem
           key={c.id}

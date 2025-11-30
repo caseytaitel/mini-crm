@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
 import type { Note } from "../../types/Note";
+import styles from "./NoteItem.module.css";
 
 type Props = {
   note: Note;
   updateNote: (id: number, data: Partial<Note>) => Promise<void>;
   deleteNote: (id: number) => Promise<void>;
+  isSelected: boolean;
+  onSelect: () => void;
 };
 
-export function NoteItem({ note, updateNote, deleteNote }: Props) {
+export function NoteItem({ note, updateNote, deleteNote, isSelected, onSelect }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(note.title);
   const [body, setBody] = useState(note.body);
 
-  // Sync local state with updated props
+  // Sync when props change
   useEffect(() => {
     setTitle(note.title);
     setBody(note.body);
@@ -31,40 +34,42 @@ export function NoteItem({ note, updateNote, deleteNote }: Props) {
 
   return (
     <div
-      style={{
-        border: "1px solid #ddd",
-        padding: 12,
-        marginBottom: 8,
-        borderRadius: 4,
-      }}
+      onClick={onSelect}
+      className={isSelected ? styles.containerSelected : styles.container}
     >
       {isEditing ? (
         <>
           <input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            style={{ width: "100%", marginBottom: 8 }}
+            className={styles.input}
           />
 
           <textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            style={{ width: "100%", marginBottom: 8 }}
+            className={styles.textarea}
           />
 
-          <button onClick={handleSave} style={{ marginRight: 8 }}>
+          <button onClick={handleSave} className={styles.saveButton}>
             Save
           </button>
-          <button onClick={handleCancel}>Cancel</button>
+          <button onClick={handleCancel} className={styles.button}>
+            Cancel
+          </button>
         </>
       ) : (
         <>
           <strong>{note.title}</strong>
           <p>{note.body}</p>
 
-          <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={() => setIsEditing(true)}>Edit</button>
-            <button onClick={() => deleteNote(note.id)}>Delete</button>
+          <div className={styles.buttonContainer}>
+            <button onClick={(e) => { e.stopPropagation(); setIsEditing(true); }} className={styles.button}>
+              Edit
+            </button>
+            <button onClick={(e) => { e.stopPropagation(); deleteNote(note.id); }} className={styles.button}>
+              Delete
+            </button>
           </div>
         </>
       )}

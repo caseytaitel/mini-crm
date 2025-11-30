@@ -10,6 +10,7 @@ export function useContacts() {
   const [companyFilter, setCompanyFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 5; 
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   useEffect(() => {
     setCurrentPage(1);
@@ -67,12 +68,18 @@ export function useContacts() {
     companyFilter === ""
       ? searched
       : searched.filter((c) => c.company === companyFilter);
+  
+  // 3. SORT
+  const sorted = [...filtered].sort((a, b) => {
+    if (sortOrder === "asc") return a.name.localeCompare(b.name);
+    return b.name.localeCompare(a.name);
+  });
 
-  // 3. PAGINATION
-  const totalPages = Math.ceil(filtered.length / pageSize);
+  // 4. PAGINATION
+  const totalPages = Math.ceil(sorted.length / pageSize);
 
   const start = (currentPage - 1) * pageSize;
-  const paginated = filtered.slice(start, start + pageSize);
+  const paginated = sorted.slice(start, start + pageSize);
   
   return {
     contacts: paginated,
@@ -88,5 +95,7 @@ export function useContacts() {
     currentPage,
     setCurrentPage,
     totalPages,
+    sortOrder,
+    setSortOrder,
   };
 }
