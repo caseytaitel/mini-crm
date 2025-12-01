@@ -42,7 +42,7 @@ export function ContactsPanel({
   totalPages,
   loading,
   sortOrder,
-  setSortOrder,   // <-- THESE WERE MISSING
+  setSortOrder,   
 }: Props) {
   return (
     <div className={styles.container}>
